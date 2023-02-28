@@ -1,3 +1,10 @@
+#-------------------------------------------------------------------------------
+# Nombre: Proyecto Individual 2
+# Titulo: Mercado Bursatil
+# Author:Jose Manuel Bracho Navarro
+# Fecha:     28/02/2023
+#-------------------------------------------------------------------------------
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
