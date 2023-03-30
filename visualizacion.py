@@ -20,7 +20,7 @@ import emoji
 st.image('https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png')
 
 #Titulo
-st.title('Propuesta de Inversion - Chevron (CVX)')
+st.title('Comparación del SPY con nuestro portfolio sugerido')
 st.markdown('***')
 
 start = '2000-01-01'
@@ -29,12 +29,14 @@ start = '2000-01-01'
 spy = yf.download('SPY', start)
 xle = pd.read_csv('xle.csv')
 cvx = pd.read_csv('cvx.csv')
-cvx2 = pd.read_csv('cvx2.csv')
+spy2 = yf.download('SPY', start)
 petroleo = pd.read_csv('petroleo.csv')
 empresas = pd.read_csv("empresas.csv")
 
 spy.reset_index(inplace=True)
 spy['Date'] = spy['Date'].dt.strftime('%Y/%m/%d')
+spy2.reset_index(inplace=True)
+spy2['Date'] = spy['Date'].dt.strftime('%Y/%m/%d')
 
 spy.set_index("Date", inplace=True)
 xle.set_index("Date", inplace=True)
@@ -47,83 +49,82 @@ empresas.set_index("Date", inplace=True)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader(emoji.emojize(':money_with_wings: Market Cap:'))
-    st.write('313.11B U$D')
-    st.subheader(emoji.emojize(':dollar: Ventas:'))
-    st.write('235.75B U$D')
-    st.subheader(emoji.emojize(':top: G/A en el 2022:'))
-    st.write('124.60%')
+    st.subheader(emoji.emojize(':money_with_wings: Activos Netos:'))
+    st.write('359.63B U$D')
 
     
 with col2:
-    st.subheader(emoji.emojize(':chart_with_upwards_trend: Precio De La Accion:'))
-    st.write('162.41 U$D')
-    st.subheader(emoji.emojize(':moneybag: Income :'))
-    st.write('35.47B U$D')
+    st.subheader(emoji.emojize(':chart_with_upwards_trend: Precio Del ETF:'))
+    st.write('403.65 U$D')
     st.subheader(emoji.emojize(':chart_with_upwards_trend: Dividendos %:'))
     st.write('3.72%')
 
 # KPI 1: Porcentaje de cambio en el precio de cierre
-change_pct = (cvx["Adj Close"][-1] - cvx["Adj Close"][0]) / cvx["Adj Close"][0] * 100
+change_pct = (spy["Adj Close"][-1] - spy["Adj Close"][0]) / spy["Adj Close"][0] * 100
 st.subheader(f":chart_with_upwards_trend: Porcentaje de cambio en el precio de cierre:")
 st.write(f"{change_pct:.2f}%")
 
 # KPI 2: Precio promedio de cierre
-avg_close_price = cvx["Adj Close"].mean()
+avg_close_price = spy["Adj Close"].mean()
 st.subheader(f":money_with_wings: Precio promedio de cierre:")
 st.write(f"{avg_close_price:.2f} U$D")
 
-# KPI 3: Volatilidad de la acción de CVX en comparación con otras empresas del sector petrolero
+# KPI 3: Volatilidad del ETF del SPY en comparación con mi portfolio
 # Obtener los datos de las empresas del sector
-tickers = ["CVX", "BKR", "HAL", "SLB", "CTRA"]  # Agrega aquí los tickers de las empresas que deseas comparar
-petroleum_sector = yf.download(tickers, start='2000-01-01', end='2023-01-22', group_by='ticker')
+tickers = ['AZO', 'TSCO', 'NEE', 'AES', 'CTVA', 'LIN', 'EXR', 'MAA', 'HES', 'COP']  # Agrega aquí los tickers de las empresas que deseas comparar
+portfolio = yf.download(tickers, start='2000-01-01', group_by='ticker')
 
 # Calcular la desviación estándar del precio de cierre ajustado de cada empresa
-std_cvx = petroleum_sector["CVX"]["Adj Close"].std()
-std_BKR = petroleum_sector["BKR"]["Adj Close"].std()
-std_HAL = petroleum_sector["HAL"]["Adj Close"].std()
-std_SLB = petroleum_sector["SLB"]["Adj Close"].std()
-std_CTRA = petroleum_sector["CTRA"]["Adj Close"].std()
+std_AZO = portfolio["AZO"]["Adj Close"].std()
+std_TSCO = portfolio["TSCO"]["Adj Close"].std()
+std_NEE = portfolio["NEE"]["Adj Close"].std()
+std_AES = portfolio["AES"]["Adj Close"].std()
+std_CTVA = portfolio["CTVA"]["Adj Close"].std()
+std_LIN = portfolio["LIN"]["Adj Close"].std()
+std_EXR = portfolio["EXR"]["Adj Close"].std()
+std_MAA = portfolio["MAA"]["Adj Close"].std()
+std_HES = portfolio["HES"]["Adj Close"].std()
+std_COP = portfolio["COP"]["Adj Close"].std()
 
 # Crear un DataFrame con los resultados
-data = {"Ticker": ["CVX", "BKR", "HAL", "SLB", "CTRA"],
-        "Desviación estándar del precio de cierre ajustado": [std_cvx, std_BKR, std_HAL, std_SLB, std_CTRA]}
+data = {"Ticker": ['AZO', 'TSCO', 'NEE', 'AES', 'CTVA', 'LIN', 'EXR', 'MAA', 'HES', 'COP'],
+        "Desviación estándar del precio de cierre ajustado": [std_AZO, std_TSCO, std_NEE, std_AES, std_CTVA,std_LIN,std_EXR,std_MAA,std_HES,std_COP]}
 df = pd.DataFrame(data)
 
 # Mostrar el DataFrame en Streamlit
-st.subheader(":fire: Volatilidad de la acción de CVX en comparación con otras empresas del sector petrolero :fire:")
+st.subheader(":fire: Volatilidad del ETF en comparación con mi portfolio :fire:")
 st.write(df)
 
 
 
-# 1. VALOR DE CHEVRON
+# 1. VALOR DE SPY
 
 #Gráfico de líneas
-st.header('Grafica de la accion CVX')
-st.line_chart(cvx.Close)
+st.header('Grafica del SPY')
+st.line_chart(spy.Close)
 
 
-# 2. Mejor dia de la semana para invertir en CVX
-st.header('Mejor Dia De La Semana Para Invertir En CVX')
+# 2. Mejor dia de la semana para invertir en SPY
+st.header('Mejor Dia De La Semana Para Invertir En SPY')
 
 # Definir el orden de los días de la semana
 weekday_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
 # Convertir la columna Date 
-cvx2["Date"] = pd.to_datetime(cvx2["Date"])
-cvx2["Weekday"] = cvx2["Date"].dt.day_name()
+spy2["Date"] = pd.to_datetime(spy2["Date"])
+spy2["Weekday"] = spy2["Date"].dt.day_name()
 
 # Calcular el rendimiento diario
-cvx2["Daily Return"] = cvx2["Adj Close"].pct_change()
+spy2["Daily Return"] = spy2["Adj Close"].pct_change()
 
 # Añadir una columna que contenga el día de la semana correspondiente a cada fecha
-cvx2["Weekday"] = cvx2["Date"].dt.day_name()
+spy2["Weekday"] = spy2["Date"].dt.day_name()
 
 # Convertir la columna Weekday en una categoría con un orden personalizado de días de la semana
-cvx2["Weekday"] = pd.Categorical(cvx2["Weekday"], categories=weekday_order, ordered=True)
+spy2["Weekday"] = pd.Categorical(spy2["Weekday"], categories=weekday_order, ordered=True)
 
 # Agrupar los datos por día de la semana y calcular el rendimiento promedio
-mean_return = cvx2.groupby("Weekday")["Daily Return"].mean().reset_index()
+mean_return = spy2.groupby("Weekday")["Daily Return"].mean().reset_index()
 
 # Visualizar los resultados en una gráfica de barras
 fig = px.bar(mean_return, x="Weekday", y="Daily Return", color="Weekday",
