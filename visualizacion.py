@@ -36,7 +36,7 @@ empresas = pd.read_csv("empresas.csv")
 spy.reset_index(inplace=True)
 spy['Date'] = spy['Date'].dt.strftime('%Y/%m/%d')
 spy2.reset_index(inplace=True)
-spy2['Date'] = spy['Date'].dt.strftime('%Y/%m/%d')
+spy2['Date'] = spy2['Date'].dt.strftime('%Y/%m/%d')
 
 spy.set_index("Date", inplace=True)
 xle.set_index("Date", inplace=True)
