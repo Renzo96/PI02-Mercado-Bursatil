@@ -27,11 +27,7 @@ start = '2000-01-01'
 
 
 spy = yf.download('SPY', start)
-xle = pd.read_csv('xle.csv')
-cvx = pd.read_csv('cvx.csv')
 spy2 = yf.download('SPY', start)
-petroleo = pd.read_csv('petroleo.csv')
-empresas = pd.read_csv("empresas.csv")
 
 spy.reset_index(inplace=True)
 spy['Date'] = spy['Date'].dt.strftime('%Y/%m/%d')
@@ -39,10 +35,7 @@ spy2.reset_index(inplace=True)
 spy2['Date'] = spy2['Date'].dt.strftime('%Y/%m/%d')
 
 spy.set_index("Date", inplace=True)
-xle.set_index("Date", inplace=True)
-cvx.set_index("Date", inplace=True)
-petroleo.set_index("Date", inplace=True)
-empresas.set_index("Date", inplace=True)
+
 
 ##Datos
 
@@ -86,8 +79,8 @@ std_COP = portfolio["COP"]["Adj Close"].std()
 std_SPY = spy["Adj Close"].std()
 
 # Crear un DataFrame con los resultados
-data = {"Ticker": ['AZO', 'TSCO', 'NEE', 'AES', 'CTVA', 'LIN', 'EXR', 'MAA', 'HES', 'COP'],
-        "Desviación estándar del precio de cierre ajustado": [std_AZO, std_TSCO, std_NEE, std_AES, std_CTVA,std_LIN,std_EXR,std_MAA,std_HES,std_COP]}
+data = {"Ticker": ['SPY','AZO', 'TSCO', 'NEE', 'AES', 'CTVA', 'LIN', 'EXR', 'MAA', 'HES', 'COP'],
+        "Desviación estándar del precio de cierre ajustado": [std_SPY,std_AZO, std_TSCO, std_NEE, std_AES, std_CTVA,std_LIN,std_EXR,std_MAA,std_HES,std_COP]}
 df = pd.DataFrame(data)
 
 # Mostrar el DataFrame en Streamlit
@@ -135,11 +128,7 @@ st.plotly_chart(fig)
 #3. Gráfico de empresas históricos: Un gráfico que muestre los precios de cierre históricos de Chevron, el XLE y el SPY desde el 2000.
 #  Esto podría ayudar a ilustrar cómo ha evolucionado el precio de Chevron en comparación con el sector energético específicamente.
 
-st.header('Relacion entre los precios de chevron y el XLE (Indice del sector energetico)')
-
-# Tickers de Chevron y del petróleo crudo
-chevron = cvx
-xle = xle
+st.header('Relacion entre los precios de SPY y mi portfolio')
 
 # Creación de un DataFrame con los precios de SPY y mi portfolio
 
