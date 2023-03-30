@@ -56,8 +56,6 @@ with col1:
 with col2:
     st.subheader(emoji.emojize(':chart_with_upwards_trend: Precio Del ETF:'))
     st.write('403.65 U$D')
-    st.subheader(emoji.emojize(':chart_with_upwards_trend: Dividendos %:'))
-    st.write('3.72%')
 
 # KPI 1: Porcentaje de cambio en el precio de cierre
 change_pct = (spy["Adj Close"][-1] - spy["Adj Close"][0]) / spy["Adj Close"][0] * 100
@@ -129,7 +127,7 @@ mean_return = spy2.groupby("Weekday")["Daily Return"].mean().reset_index()
 # Visualizar los resultados en una gráfica de barras
 fig = px.bar(mean_return, x="Weekday", y="Daily Return", color="Weekday",
              color_discrete_sequence=px.colors.qualitative.Pastel)
-fig.update_layout(title="Rendimiento promedio diario de la acción de Chevron (CVX) por día de la semana")
+fig.update_layout(title="Rendimiento promedio diario de la acción de Chevron (SPY) por día de la semana")
 st.plotly_chart(fig)
 
 
@@ -142,15 +140,20 @@ st.header('Relacion entre los precios de chevron y el XLE (Indice del sector ene
 chevron = cvx
 xle = xle
 
-# Creación de un DataFrame con los precios de Chevron y del petróleo crudo
-prices_df = pd.DataFrame({"Chevron": cvx["Adj Close"], "XLE": xle["Adj Close"]})
+# Creación de un DataFrame con los precios de SPY y mi portfolio
+
+
+prices_df = pd.DataFrame({"SPY": spy["Adj Close"], "AZO": portfolio['AZO']["Adj Close"],"TSCO": portfolio['TSCO']["Adj Close"],
+                          "NEE": portfolio['NEE']["Adj Close"],"AES": portfolio['AES']["Adj Close"],"CTVA": portfolio['CTVA']["Adj Close"]
+                         "LIN": portfolio['LIN']["Adj Close"],"EXR": portfolio['EXR']["Adj Close"],"MAA": portfolio['MAA']["Adj Close"],
+                          "HES": portfolio['HES']["Adj Close"],"COP": portfolio['COP']["Adj Close"] })
 
 # Creación del gráfico de líneas
-fig = px.line(prices_df, title="Relación entre los precios de Chevron y del XLE")
+fig = px.line(prices_df, title="Relación entre los precios del SPY y mi portfolio sugerido")
 
 # Agregar las series de datos para Chevron y el petróleo crudo
-fig.add_scatter(x=prices_df.index, y=prices_df["Chevron"], name="Chevron")
-fig.add_scatter(x=prices_df.index, y=prices_df["XLE"], name="XLE")
+fig.add_scatter(x=prices_df.index, y=prices_df["SPY"], name="SPY")
+fig.add_scatter(x=prices_df.index, y=prices_df["AZO"], name="AZO")
 
 # Mostrar el gráfico en Streamlit
 st.plotly_chart(fig)
