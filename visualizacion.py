@@ -33,6 +33,9 @@ cvx2 = pd.read_csv('cvx2.csv')
 petroleo = pd.read_csv('petroleo.csv')
 empresas = pd.read_csv("empresas.csv")
 
+spy.reset_index(inplace=True)
+spy['Date'] = spy['Date'].dt.strftime('%Y/%m/%d')
+
 spy.set_index("Date", inplace=True)
 xle.set_index("Date", inplace=True)
 cvx.set_index("Date", inplace=True)
