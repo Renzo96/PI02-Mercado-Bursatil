@@ -144,7 +144,7 @@ xle = xle
 
 
 prices_df = pd.DataFrame({"SPY": spy["Adj Close"], "AZO": portfolio['AZO']["Adj Close"],"TSCO": portfolio['TSCO']["Adj Close"],
-                          "NEE": portfolio['NEE']["Adj Close"],"AES": portfolio['AES']["Adj Close"],"CTVA": portfolio['CTVA']["Adj Close"]
+                          "NEE": portfolio['NEE']["Adj Close"],"AES": portfolio['AES']["Adj Close"],"CTVA": portfolio['CTVA']["Adj Close"],
                          "LIN": portfolio['LIN']["Adj Close"],"EXR": portfolio['EXR']["Adj Close"],"MAA": portfolio['MAA']["Adj Close"],
                           "HES": portfolio['HES']["Adj Close"],"COP": portfolio['COP']["Adj Close"] })
 
