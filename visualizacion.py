@@ -83,6 +83,7 @@ std_EXR = portfolio["EXR"]["Adj Close"].std()
 std_MAA = portfolio["MAA"]["Adj Close"].std()
 std_HES = portfolio["HES"]["Adj Close"].std()
 std_COP = portfolio["COP"]["Adj Close"].std()
+std_SPY = spy["Adj Close"].std()
 
 # Crear un DataFrame con los resultados
 data = {"Ticker": ['AZO', 'TSCO', 'NEE', 'AES', 'CTVA', 'LIN', 'EXR', 'MAA', 'HES', 'COP'],
@@ -151,60 +152,18 @@ prices_df = pd.DataFrame({"SPY": spy["Adj Close"], "AZO": portfolio['AZO']["Adj 
 # Creación del gráfico de líneas
 fig = px.line(prices_df, title="Relación entre los precios del SPY y mi portfolio sugerido")
 
-# Agregar las series de datos para Chevron y el petróleo crudo
+# Agregar las series de datos para SPY y portfolio
 fig.add_scatter(x=prices_df.index, y=prices_df["SPY"], name="SPY")
 fig.add_scatter(x=prices_df.index, y=prices_df["AZO"], name="AZO")
-
-# Mostrar el gráfico en Streamlit
-st.plotly_chart(fig)
-
-
-
-# 4. Relacion con los precios de chevron y el petroleo crudo
-
-st.header('Relacion entre los precios de chevron y el petroleo crudo')
-
-# Tickers de Chevron y del petróleo crudo
-chevron = cvx
-crude_oil = petroleo
-
-# Creación de un DataFrame con los precios de Chevron y del petróleo crudo
-prices_df = pd.DataFrame({"Chevron": cvx["Adj Close"], "Crude Oil": crude_oil["Adj Close"]})
-
-# Creación del gráfico de líneas
-fig = px.line(prices_df, title="Relación entre los empresas de Chevron y del petróleo crudo")
-
-# Agregar las series de datos para Chevron y el petróleo crudo
-fig.add_scatter(x=prices_df.index, y=prices_df["Chevron"], name="Chevron")
-fig.add_scatter(x=prices_df.index, y=prices_df["Crude Oil"], name="Petróleo crudo")
-
-# Mostrar el gráfico en Streamlit
-st.plotly_chart(fig)
-
-
-# 5. comparacion con otras empresas del sector energetico
-
-st.header('Relacion entre los precios de Chevron(CVX) y 4 empresas importantes del sector energetico')
-
-# Seleccionar solo los precios de cierre
-precios_cierre = empresas.filter(regex='_Close')
-
-# Renombrar las columnas eliminando el sufijo "_Close"
-nombres_empresas = [nombre[:-6] for nombre in precios_cierre.columns]
-precios_cierre.columns = nombres_empresas
-
-# Crear el DataFrame para el gráfico
-df = precios_cierre.reset_index()
-
-# Convertir la columna "Date" en índice
-df = df.set_index('Date')
-
-# Crear el gráfico de líneas
-fig = px.line(df, title="Relación entre los precios de cierre de las empresas BKR, CVX, HAL, SLB y CTRA")
-
-# Agregar las series de datos para cada empresa
-for empresa in nombres_empresas:
-    fig.add_scatter(x=df.index, y=df[empresa], name=empresa)
+fig.add_scatter(x=prices_df.index, y=prices_df["TSCO"], name="TSCO")
+fig.add_scatter(x=prices_df.index, y=prices_df["NEE"], name="NEE")
+fig.add_scatter(x=prices_df.index, y=prices_df["AES"], name="AES")
+fig.add_scatter(x=prices_df.index, y=prices_df["CTVA"], name="CTVA")
+fig.add_scatter(x=prices_df.index, y=prices_df["LIN"], name="LIN")
+fig.add_scatter(x=prices_df.index, y=prices_df["EXR"], name="EXR")
+fig.add_scatter(x=prices_df.index, y=prices_df["MAA"], name="MAA")
+fig.add_scatter(x=prices_df.index, y=prices_df["HES"], name="HES")
+fig.add_scatter(x=prices_df.index, y=prices_df["COP"], name="COP")
 
 # Mostrar el gráfico en Streamlit
 st.plotly_chart(fig)
